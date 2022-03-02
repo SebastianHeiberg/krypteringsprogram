@@ -162,10 +162,14 @@ public class Main {
 
   public int forskydBogstavVærdi(int bogstavVærdi, int forskydning) {
 
-    bogstavVærdi += forskydning;
+    if (bogstavVærdi == 0) { //mellemrum er uændret
+      return bogstavVærdi;
+    } else {
+      bogstavVærdi += forskydning;
+    }
 
-    if (bogstavVærdi >= 29) {
-      bogstavVærdi -= 28;
+    if(bogstavVærdi >= 30) {
+      bogstavVærdi -= 29;
     }
 
     return bogstavVærdi;
