@@ -67,9 +67,10 @@ public class Main {
 
   //hovedMenuer
   public void startOptions() {
-
+    //print options
     printOptions();
 
+    //vælg imellem valgene
     int valg = keyboard.nextInt();
 
     switch (valg) {
@@ -82,7 +83,10 @@ public class Main {
   }
 
   public void startCæsarOptions() {
+    //printer menuen
     printCæsarOptions();
+
+    //bruger indtaster sit valg
     int valg = keyboard.nextInt();
 
     switch (valg) {
@@ -93,8 +97,11 @@ public class Main {
     }
   }
 
+
   //Metoder for begge cæsarfunktioner
   public String indtastString() {
+
+    //Brugeren indtaster en string, som returneres
     keyboard.nextLine();
     String almindeligTekst = keyboard.nextLine();
     almindeligTekst = almindeligTekst.toUpperCase();
@@ -102,21 +109,21 @@ public class Main {
   }
 
   public int forskydning() {
-
+    //først printes der, derefter indtastes forskydningen
     printForskydning();
     int forskydning = keyboard.nextInt();
     return forskydning;
 
   }
 
-  public char[] almStringTilArray(String almtekst) {
-
+  public char[] stringTilArray(String almtekst) {
+    //tager teksten og laver den om til et array med char
     char[] charArray = almtekst.toCharArray();
     return charArray;
   }
 
   public int bogstavTilTal(char bogstav) {
-
+    //Laver et bogstav om til et tal, der sendes tilbage
     String alfabet = " ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
     int bogstavTalværdi = alfabet.indexOf(bogstav);
     return bogstavTalværdi;
@@ -124,11 +131,13 @@ public class Main {
   }
 
   public char fraTalTilBogstav(int talværdi) {
+    //tager et tal ind og leveret bogstavet på pladsen
     String alfabet = " ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
     char nytBogstav = alfabet.charAt(talværdi);
     return nytBogstav;
 
   }
+
 
   //cæsarkryptering
 
@@ -139,7 +148,7 @@ public class Main {
 
     //teksten til kryptering og lav et array
     String almindeligTekst = indtastString();
-    char[] almindeligTekstSomArray = almStringTilArray(almindeligTekst);
+    char[] almindeligTekstSomArray = stringTilArray(almindeligTekst);
 
     printBetweenOptions();
 
@@ -154,18 +163,23 @@ public class Main {
   }
 
   public void krypterTekst(char[] stringArray, int forskydningVærdi) {
-
+    //Starten en tekst der kan printes ud
     StringBuilder krypteretTekst = new StringBuilder();
 
+    //et loop der gennemgår arrayen der gives metoden og krypterer den
     for (int i = 0; i < stringArray.length; i++) {
 
-      int bogstavVærdi = bogstavTilTal(stringArray[i]);
-      bogstavVærdi = forskydBogstavVærdi(bogstavVærdi, forskydningVærdi);
-      char kodetBogstav = fraTalTilBogstav(bogstavVærdi);
-      krypteretTekst.append(kodetBogstav);
+      int bogstavVærdi = bogstavTilTal(stringArray[i]); //lav char til tal
+
+      bogstavVærdi = forskydBogstavVærdi(bogstavVærdi, forskydningVærdi); // tilføjer forskydning til værdien
+
+      char kodetBogstav = fraTalTilBogstav(bogstavVærdi); //laver tal om til bogstav
+
+      krypteretTekst.append(kodetBogstav); //tilføjer bogstav til sætningen
 
     }
-    String krypteretToLowercase = krypteretTekst.toString().toLowerCase();
+
+    String krypteretToLowercase = krypteretTekst.toString().toLowerCase(); //Store bogstaver føles som at den råber
 
     //udskriv resultat
     printKrypteretKode(krypteretToLowercase);
@@ -181,16 +195,17 @@ public class Main {
     if (bogstavVærdi == 0) { //mellemrum er uændret
       return bogstavVærdi;
     } else {
-      bogstavVærdi += forskydning;
+      bogstavVærdi += forskydning; //opdaterer værdien
     }
 
-    if (bogstavVærdi >= 30) {
+    if (bogstavVærdi >= 30) { //søger for at gå tiltage til start, hvis man går over længden af alfabetet
       bogstavVærdi -= 29;
     }
 
     return bogstavVærdi;
 
   }
+
 
   // dekrypter
 
@@ -201,7 +216,7 @@ public class Main {
 
     //teksten til kryptering og lav et array
     String krypteretTekst = indtastString();
-    char[] krypteretTekstSomArray = almStringTilArray(krypteretTekst);
+    char[] krypteretTekstSomArray = stringTilArray(krypteretTekst);
 
     printBetweenOptions();
 
@@ -217,7 +232,7 @@ public class Main {
   }
 
   public int deforskydning() {
-
+    //forskydning med dekrypteret tekst info
     printdeforskydning();
     int forskydning = keyboard.nextInt();
     return forskydning;
@@ -225,18 +240,22 @@ public class Main {
   }
 
   public void afkrypterTekst(char[] stringArray, int forskydningVærdi) {
-
+    //en stringbuilder til den nye tekst
     StringBuilder normalTekst = new StringBuilder();
 
+    //et loop der gennemgår arrayen der gives metoden og krypterer den
     for (int i = 0; i < stringArray.length; i++) {
 
-      int bogstavVærdi = bogstavTilTal(stringArray[i]);
-      bogstavVærdi = deforskydBogstavVærdi(bogstavVærdi, forskydningVærdi);
-      char kodetBogstav = fraTalTilBogstav(bogstavVærdi);
-      normalTekst.append(kodetBogstav);
+      int bogstavVærdi = bogstavTilTal(stringArray[i]); //lav char til tal
+
+      bogstavVærdi = deforskydBogstavVærdi(bogstavVærdi, forskydningVærdi); // tilføjer forskydning til værdien
+
+      char kodetBogstav = fraTalTilBogstav(bogstavVærdi); //laver tal om til bogstav
+
+      normalTekst.append(kodetBogstav); //tilføjer bogstav til sætningen
 
     }
-    String krypteretToLowercase = normalTekst.toString().toLowerCase();
+    String krypteretToLowercase = normalTekst.toString().toLowerCase(); //Store bogstaver føles som at den råber
 
     //udskriv resultat
     printKrypteretKode(krypteretToLowercase);
