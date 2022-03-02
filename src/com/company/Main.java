@@ -6,7 +6,6 @@ public class Main {
 
   final public Scanner keyboard = new Scanner(System.in);
 
-
   //Alle metoder der printer
   public void printOptions() {
     printBetweenOptions();
@@ -38,6 +37,11 @@ public class Main {
     System.out.print("Først indtast den tekst du ønsker kodet:");
   }
 
+  public void printCæsarDekrypter() {
+    printBetweenOptions();
+    System.out.print("Først indtast den tekst du ønsker dekodet:");
+  }
+
   public void printForskydning() {
 
     System.out.printf("""
@@ -46,6 +50,11 @@ public class Main {
         kunne afkrypterer den.
         """);
     System.out.print("\nIndtast dit forskydningsnummer, et helt tal mellem 1 og 29: ");
+  }
+
+  public void printdeforskydning() {
+
+    System.out.print("\nIndtast dit forskydningsnummer til afkodningen, det er et helt tal mellem 1 og 29: ");
   }
 
   public void printKrypteretKode(String krypteretKode) {
@@ -64,7 +73,7 @@ public class Main {
     int valg = keyboard.nextInt();
 
     switch (valg) {
-      case 1 -> cæsarOptions();
+      case 1 -> startCæsarOptions();
       case 2 -> System.out.println("Program afsluttet");
       default -> startOptions();
 
@@ -72,19 +81,56 @@ public class Main {
 
   }
 
-  public void cæsarOptions() {
+  public void startCæsarOptions() {
     printCæsarOptions();
     int valg = keyboard.nextInt();
 
     switch (valg) {
       case 1 -> cæsarKrypter();
-      case 2 -> System.out.println("dekrypter tekst");
+      case 2 -> cæsarDekrypter();
       case 3 -> startOptions();
-      default -> cæsarOptions();
+      default -> startCæsarOptions();
     }
   }
 
-  //kryptering
+  //Metoder for begge cæsarfunktioner
+  public String indtastString() {
+    keyboard.nextLine();
+    String almindeligTekst = keyboard.nextLine();
+    almindeligTekst = almindeligTekst.toUpperCase();
+    return almindeligTekst;
+  }
+
+  public int forskydning() {
+
+    printForskydning();
+    int forskydning = keyboard.nextInt();
+    return forskydning;
+
+  }
+
+  public char[] almStringTilArray(String almtekst) {
+
+    char[] charArray = almtekst.toCharArray();
+    return charArray;
+  }
+
+  public int bogstavTilTal(char bogstav) {
+
+    String alfabet = " ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
+    int bogstavTalværdi = alfabet.indexOf(bogstav);
+    return bogstavTalværdi;
+
+  }
+
+  public char fraTalTilBogstav(int talværdi) {
+    String alfabet = " ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
+    char nytBogstav = alfabet.charAt(talværdi);
+    return nytBogstav;
+
+  }
+
+  //cæsarkryptering
 
   public void cæsarKrypter() {
 
@@ -107,21 +153,6 @@ public class Main {
 
   }
 
-  public String indtastString() {
-    keyboard.nextLine();
-    String almindeligTekst = keyboard.nextLine();
-    almindeligTekst = almindeligTekst.toUpperCase();
-    return almindeligTekst;
-  }
-
-  public int forskydning() {
-
-    printForskydning();
-    int forskydning = keyboard.nextInt();
-    return forskydning;
-
-  }
-
   public void krypterTekst(char[] stringArray, int forskydningVærdi) {
 
     StringBuilder krypteretTekst = new StringBuilder();
@@ -140,23 +171,8 @@ public class Main {
     printKrypteretKode(krypteretToLowercase);
 
     //retur til Menu
-    cæsarOptions();
+    startCæsarOptions();
 
-
-  }
-
-  public int bogstavTilTal(char bogstav) {
-
-    String alfabet = " ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
-    int bogstavTalværdi = alfabet.indexOf(bogstav);
-    return bogstavTalværdi;
-
-  }
-
-  public char fraTalTilBogstav(int talværdi) {
-    String alfabet = " ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ";
-    char nytBogstav = alfabet.charAt(talværdi);
-    return nytBogstav;
 
   }
 
@@ -168,7 +184,7 @@ public class Main {
       bogstavVærdi += forskydning;
     }
 
-    if(bogstavVærdi >= 30) {
+    if (bogstavVærdi >= 30) {
       bogstavVærdi -= 29;
     }
 
@@ -176,10 +192,75 @@ public class Main {
 
   }
 
-  public char[] almStringTilArray(String almtekst) {
+  // dekrypter
 
-    char[] charArray = almtekst.toCharArray();
-    return charArray;
+  public void cæsarDekrypter() {
+
+    //Menu
+    printCæsarDekrypter();
+
+    //teksten til kryptering og lav et array
+    String krypteretTekst = indtastString();
+    char[] krypteretTekstSomArray = almStringTilArray(krypteretTekst);
+
+    printBetweenOptions();
+
+    //indtaste forskydning
+    int forskydning = deforskydning();
+
+    printBetweenOptions();
+
+    //kald til afkryptering
+    afkrypterTekst(krypteretTekstSomArray, forskydning);
+
+
+  }
+
+  public int deforskydning() {
+
+    printdeforskydning();
+    int forskydning = keyboard.nextInt();
+    return forskydning;
+
+  }
+
+  public void afkrypterTekst(char[] stringArray, int forskydningVærdi) {
+
+    StringBuilder normalTekst = new StringBuilder();
+
+    for (int i = 0; i < stringArray.length; i++) {
+
+      int bogstavVærdi = bogstavTilTal(stringArray[i]);
+      bogstavVærdi = deforskydBogstavVærdi(bogstavVærdi, forskydningVærdi);
+      char kodetBogstav = fraTalTilBogstav(bogstavVærdi);
+      normalTekst.append(kodetBogstav);
+
+    }
+    String krypteretToLowercase = normalTekst.toString().toLowerCase();
+
+    //udskriv resultat
+    printKrypteretKode(krypteretToLowercase);
+
+    //retur til Menu
+    startCæsarOptions();
+
+
+  }
+
+  public int deforskydBogstavVærdi(int bogstavVærdi, int forskydning) {
+
+    if (bogstavVærdi == 0) { //mellemrum er uændret
+      return bogstavVærdi;
+    } else {
+      bogstavVærdi -= forskydning;
+    }
+
+    if (bogstavVærdi <= 0) {
+      bogstavVærdi += 29;
+    }
+
+    return bogstavVærdi;
+
   }
 
 
