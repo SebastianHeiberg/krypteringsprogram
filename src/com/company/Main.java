@@ -25,6 +25,13 @@ public class Main {
 
   }
 
+  public void printVigenerekodetekst() {
+
+    printBetweenOptions();
+    System.out.print("Først indtast den kodede tekst du ønsker afkodet:");
+
+  }
+
   public void printVigenereKodeord() {
     System.out.printf("""
         \nFor at krypterer din tekst, skal du vælge et kodeord, som bruges til at gøre din tekst
@@ -34,12 +41,23 @@ public class Main {
     System.out.print("\nIndtast dit kodeord, et ord uden brug af mellemrum: ");
   }
 
+  public void printDevigenereKodeord() {
+    System.out.printf("""
+        \nFor at afkrypterer din tekst, skal du bruge dit kodeord, som blev brugt til at gøre din tekst
+        ugenkendelig.
+        """);
+    System.out.print("\nIndtast dit kodeord, et ord uden brug af mellemrum: ");
+  }
+
 
   //Alle metoder der printer til cæsar
 
   public void printOptions() {
     printBetweenOptions();
-    System.out.println("Indtast dit valg.");
+
+    System.out.println("Velkommen til dette program, der kan kode tekster");
+
+    System.out.println("Indtast dit valg:");
     System.out.println("1: Cæsarkryptering");
     System.out.println("2: Vigenère");
     System.out.println("3: Afslut program ");
@@ -95,6 +113,13 @@ public class Main {
 
   }
 
+  public void printafkrypteretKode(String krypteretKode) {
+
+    System.out.println("Din afkrypterede kode er:");
+    System.out.println(krypteretKode);
+
+  }
+
 
   //hovedMenuer
 
@@ -139,7 +164,7 @@ public class Main {
 
     switch (valg) {
       case 1 -> vigenereKrypter();
-      case 2 -> System.out.println("dekrypter");
+      case 2 -> vigeneredekrypter();
       case 3 -> startOptions();
       default -> startVigenereOptions();
     }
@@ -347,13 +372,13 @@ public class Main {
     //indtaste forskydningskodeordet og lav en talrække
     String vigenereKodeord = vigenereForskydning();
 
-    int[] kodeTalArray = vigenereTalKodeArray(vigenereKodeord,krypteretTekstSomArray);
+    int[] kodeTalArray = vigenereTalKodeArray(vigenereKodeord, krypteretTekstSomArray);
 
     printBetweenOptions();
 
     //kald til kryptering
 
-    vigenerekrypterTekst(krypteretTekstSomArray,kodeTalArray);
+    vigenerekrypterTekst(krypteretTekstSomArray, kodeTalArray);
 
 
   }
@@ -375,19 +400,18 @@ public class Main {
     return kodeord;
   }
 
-  public int[] vigenereTalKodeArray(String kodeord,char [] kryptertekst) {
+  public int[] vigenereTalKodeArray(String kodeord, char[] kryptertekst) {
 
     int[] talarray = new int[kryptertekst.length];
     int counter = 0;
 
     for (int i = 0; i < kryptertekst.length; i++) {
 
-
       int tal = bogstavTilTal(kodeord.charAt(counter));
 
       counter += 1;
 
-      if (counter == kodeord.length() ) {
+      if (counter == kodeord.length()) {
         counter = 0;
       }
 
@@ -398,7 +422,7 @@ public class Main {
     return talarray;
   }
 
-  public void vigenerekrypterTekst (char[] stringArray, int [] forskydningVærdier) {
+  public void vigenerekrypterTekst(char[] stringArray, int[] forskydningVærdier) {
     //Starten en tekst der kan printes ud
     StringBuilder krypteretTekst = new StringBuilder();
 
@@ -407,7 +431,7 @@ public class Main {
 
       int bogstavVærdi = bogstavTilTal(stringArray[i]); //lav char til tal
 
-      bogstavVærdi = forskydBogstavVærdi(bogstavVærdi,forskydningVærdier[i]); // tilføjer forskydning til værdien
+      bogstavVærdi = forskydBogstavVærdi(bogstavVærdi, forskydningVærdier[i]); // tilføjer forskydning til værdien
 
       char kodetBogstav = fraTalTilBogstav(bogstavVærdi); //laver tal om til bogstav
 
@@ -426,6 +450,69 @@ public class Main {
   }
 
   //   //Vigenère dekrypterer
+
+  public void vigeneredekrypter() {
+
+    //Menu
+    printVigenerekodetekst();
+
+    //teksten til kryptering og lav et array
+    String krypteretTekst = indtastString();
+    char[] krypteretTekstSomArray = stringTilArray(krypteretTekst);
+
+    printBetweenOptions();
+
+    //indtaste forskydningskodeordet og lav en talrække
+    String vigenereKodeord = devigenereForskydning();
+
+    int[] kodeTalArray = vigenereTalKodeArray(vigenereKodeord, krypteretTekstSomArray);
+
+    printBetweenOptions();
+
+    //kald til kryptering
+
+    vigeneredekrypterTekst(krypteretTekstSomArray, kodeTalArray);
+
+
+  }
+
+  public void vigeneredekrypterTekst(char[] stringArray, int[] forskydningVærdier) {
+    //Starten en tekst der kan printes ud
+    StringBuilder krypteretTekst = new StringBuilder();
+
+    //et loop der gennemgår arrayen der gives metoden og krypterer den
+    for (int i = 0; i < stringArray.length; i++) {
+
+      int bogstavVærdi = bogstavTilTal(stringArray[i]); //lav char til tal
+
+      bogstavVærdi = deforskydBogstavVærdi(bogstavVærdi, forskydningVærdier[i]);
+
+      char kodetBogstav = fraTalTilBogstav(bogstavVærdi); //laver tal om til bogstav
+
+      krypteretTekst.append(kodetBogstav); //tilføjer bogstav til sætningen
+
+    }
+
+    String krypteretToLowercase = krypteretTekst.toString().toLowerCase(); //Store bogstaver føles som at den råber
+
+    //udskriv resultat
+    printKrypteretKode(krypteretToLowercase);
+
+    //retur til Menu
+    startVigenereOptions();
+
+  }
+
+  public String devigenereForskydning() {
+    //print tekst
+    printDevigenereKodeord();
+    //lav en string
+    String vigenereKodeord = indtastVigenereKodeord();
+    vigenereKodeord = vigenereKodeord.toUpperCase();
+    //returner string
+    return vigenereKodeord;
+  }
+
 
   public static void main(String[] args) {
 
