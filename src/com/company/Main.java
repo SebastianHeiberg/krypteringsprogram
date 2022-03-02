@@ -6,12 +6,43 @@ public class Main {
 
   final public Scanner keyboard = new Scanner(System.in);
 
-  //Alle metoder der printer
+
+  //Alle metoder der printer til Vigenere
+  public void printVigenereOptions() {
+    printBetweenOptions();
+    System.out.println("Indtast dit valg.");
+    System.out.println("1: Krypter tekst");
+    System.out.println("2: Dekrypter tekst ");
+    System.out.println("3: Tilbage til hovedmenu ");
+    System.out.print("Indtast dit valg: ");
+
+  }
+
+  public void printVigeneretekst () {
+
+    printBetweenOptions();
+    System.out.print("Først indtast den tekst du ønsker kodet:");
+
+  }
+
+  public void printVigenereKodeord () {
+    System.out.printf("""
+        \nFor at krypterer din tekst, skal du vælge et kodeord, som bruges til at gøre din tekst
+        ugenkendelig. Husk at gemme kodeordet, hvis du vil konverterer teksten tilbage eller andre skal 
+        kunne afkrypterer den.
+        """);
+    System.out.print("\nIndtast dit kodeord, et ord uden brug af mellemrum: ");
+  }
+
+
+  //Alle metoder der printer til cæsar
+
   public void printOptions() {
     printBetweenOptions();
     System.out.println("Indtast dit valg.");
     System.out.println("1: Cæsarkryptering");
-    System.out.println("2: Afslut program ");
+    System.out.println("2: Vigenère");
+    System.out.println("3: Afslut program ");
     System.out.print("Indtast dit valg: ");
 
   }
@@ -75,7 +106,8 @@ public class Main {
 
     switch (valg) {
       case 1 -> startCæsarOptions();
-      case 2 -> System.out.println("Program afsluttet");
+      case 2 -> startVigenereOptions();
+      case 3 -> System.out.println("Program afsluttet");
       default -> startOptions();
 
     }
@@ -97,10 +129,23 @@ public class Main {
     }
   }
 
+  public void startVigenereOptions() {
+    //printer menuen
+    printVigenereOptions();
+
+    //bruger indtaster sit valg
+    int valg = keyboard.nextInt();
+
+    switch (valg) {
+      case 1 -> vigenereKrypter();
+      case 2 -> System.out.println("dekrypter");
+      case 3 -> startOptions();
+      default -> startVigenereOptions();
+    }
+  }
 
   //Metoder for begge cæsarfunktioner
   public String indtastString() {
-
     //Brugeren indtaster en string, som returneres
     keyboard.nextLine();
     String almindeligTekst = keyboard.nextLine();
@@ -139,7 +184,7 @@ public class Main {
   }
 
 
-  //cæsarkryptering
+  //cæsar krypter
 
   public void cæsarKrypter() {
 
@@ -207,12 +252,12 @@ public class Main {
   }
 
 
-  // dekrypter
+  // cæsar dekrypter
 
   public void cæsarDekrypter() {
 
-    //Menu
-    printCæsarDekrypter();
+    //Menu, bemærk at den bentter den samme start som cæsar
+    printCæsarKrypter();
 
     //teksten til kryptering og lav et array
     String krypteretTekst = indtastString();
@@ -280,6 +325,49 @@ public class Main {
 
     return bogstavVærdi;
 
+  }
+
+
+  //Vigenère
+
+  public void vigenereKrypter () {
+
+    //Menu, bemærk at den bentter den samme start som cæsar
+    printVigeneretekst();
+
+    //teksten til kryptering og lav et array
+    String krypteretTekst = indtastString();
+    char[] krypteretTekstSomArray = stringTilArray(krypteretTekst);
+
+    printBetweenOptions();
+
+    //indtaste forskydningskodeordet
+    String vigenereKodeord = indtastVigenereKodeord();
+
+    System.out.println(vigenereKodeord);
+
+
+    printBetweenOptions();
+
+    //kald til kryptering
+
+
+  }
+
+  public String vigenereForskydning () {
+    //print tekst
+    printVigenereKodeord();
+    //lav en string
+    String vigenereKodeord = indtastString();
+    //returner string
+    return vigenereKodeord;
+  }
+
+  public String indtastVigenereKodeord() {
+    //Brugeren indtaster en string, som returneres
+    String kodeord = keyboard.nextLine();
+    kodeord = kodeord.toUpperCase();
+    return kodeord;
   }
 
 
