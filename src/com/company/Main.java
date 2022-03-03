@@ -6,7 +6,6 @@ public class Main {
 
   final public Scanner keyboard = new Scanner(System.in);
 
-
   //Alle metoder der printer til Vigenere
 
   public void printVigenereOptions() {
@@ -122,7 +121,7 @@ public class Main {
   }
 
 
-  //Menuer
+  //hovedMenuer
 
   public void startOptions() {
     //print options
@@ -172,7 +171,7 @@ public class Main {
   }
 
 
-  //Metoder brugt af begge cæsarfunktioner
+  //Metoder for begge cæsarfunktioner
 
   public String indtastString() {
     //Brugeren indtaster en string, som returneres
@@ -329,10 +328,10 @@ public class Main {
       normalTekst.append(kodetBogstav); //tilføjer bogstav til sætningen
 
     }
-    String normalTekstToLowercase = normalTekst.toString().toLowerCase(); //Store bogstaver føles som at den råber
+    String krypteretToLowercase = normalTekst.toString().toLowerCase(); //Store bogstaver føles som at den råber
 
     //udskriv resultat
-    printKrypteretKode(normalTekstToLowercase);
+    printKrypteretKode(krypteretToLowercase);
 
     //retur til Menu
     startCæsarOptions();
@@ -365,21 +364,21 @@ public class Main {
     printVigeneretekst();
 
     //teksten til kryptering og lav et array
-    String almindeligTekst = indtastString();
-    char[] almindeligTekstSomArray = stringTilArray(almindeligTekst);
+    String krypteretTekst = indtastString();
+    char[] krypteretTekstSomArray = stringTilArray(krypteretTekst);
 
     printBetweenOptions();
 
     //indtaste forskydningskodeordet og lav en talrække
     String vigenereKodeord = vigenereForskydning();
 
-    int[] kodeTalArray = vigenereTalKodeArray(vigenereKodeord, almindeligTekstSomArray);
+    int[] kodeTalArray = vigenereTalKodeArray(vigenereKodeord, krypteretTekstSomArray);
 
     printBetweenOptions();
 
     //kald til kryptering
 
-    vigenerekrypterTekst(almindeligTekstSomArray, kodeTalArray);
+    vigenerekrypterTekst(krypteretTekstSomArray, kodeTalArray);
 
 
   }
@@ -450,8 +449,7 @@ public class Main {
 
   }
 
-
-  //Vigenère dekrypterer
+  //   //Vigenère dekrypterer
 
   public void vigeneredekrypter() {
 
@@ -480,7 +478,7 @@ public class Main {
 
   public void vigeneredekrypterTekst(char[] stringArray, int[] forskydningVærdier) {
     //Starten en tekst der kan printes ud
-    StringBuilder almindeligTekst = new StringBuilder();
+    StringBuilder krypteretTekst = new StringBuilder();
 
     //et loop der gennemgår arrayen der gives metoden og krypterer den
     for (int i = 0; i < stringArray.length; i++) {
@@ -491,14 +489,14 @@ public class Main {
 
       char kodetBogstav = fraTalTilBogstav(bogstavVærdi); //laver tal om til bogstav
 
-      almindeligTekst.append(kodetBogstav); //tilføjer bogstav til sætningen
+      krypteretTekst.append(kodetBogstav); //tilføjer bogstav til sætningen
 
     }
 
-    String almindeligTekstToLowercase = almindeligTekst.toString().toLowerCase(); //Store bogstaver føles som at den råber
+    String krypteretToLowercase = krypteretTekst.toString().toLowerCase(); //Store bogstaver føles som at den råber
 
     //udskriv resultat
-    printafkrypteretKode(almindeligTekstToLowercase);
+    printKrypteretKode(krypteretToLowercase);
 
     //retur til Menu
     startVigenereOptions();
